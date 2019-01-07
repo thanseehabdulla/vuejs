@@ -1,6 +1,12 @@
 <template>
   <div class="about">
     <h1>{{ title }}</h1>
+   <div id="app">
+    <div v-for="user in users" :key="users.id">
+        <h1>{{ user.name }}</h1>
+        <p>{{ user.email }}</p>
+    </div><button @click="fetchUsers">Click me!</button>
+   </div>
     <h1>This is an about page</h1>
       <stats />
       <form @submit.prevent="addLink">
@@ -23,6 +29,11 @@ export default {
   components: {                             // Add this
     Stats
   },
+  data () {
+    return {
+      users: []
+    }
+  },
   computed: mapState([
     'title',
     'links'
@@ -40,7 +51,14 @@ export default {
     },
     removeLinks: function(link) {    // Add this
       this.removeLink(link)
-    }
+    },
+    fetchUsers: function () {
+      const baseURI = 'https://jsonplaceholder.typicode.com/users'
+      this.$http.get(baseURI)
+      .then((result) => {
+        this.users = result.data
+      })
+  	},
   }
 }
 </script>
