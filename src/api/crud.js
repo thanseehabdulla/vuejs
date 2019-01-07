@@ -1,4 +1,5 @@
 
+import axios from 'axios'
 
 function getData(data){
 	axios.get(data.url)
