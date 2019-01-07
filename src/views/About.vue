@@ -1,5 +1,10 @@
 <template>
   <div class="about">
+  <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>|
+      <a v-on:click="logout()">Logout</a>
+    </div>
     <h1>{{ title }}</h1>
    <div id="app">
     <div v-for="user in users" :key="users.id">
@@ -23,9 +28,16 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import Stats from '@/components/Stats.vue'
+import router from '../router'
 
 export default {
   name: 'about',
+  beforeCreate() {
+    console.log('Nothing gets called before me!')
+    if(localStorage.status !== "loggedin"){
+      router.push({ name: "login" });
+    }
+},
   components: {                             // Add this
     Stats
   },
@@ -59,6 +71,12 @@ export default {
         this.users = result.data
       })
   	},
+  	methods: {              
+  	logout: function () {
+     localStorage.status =""
+  	 router.push({ name: "login" });
+  	},
+  }
   }
 }
 </script>
